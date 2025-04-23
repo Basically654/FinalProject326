@@ -15,6 +15,7 @@ public interface Problem <S, A>{
     S initialState();
     S goalState();
 
+
     //executes all the applicable actions at the state and
     //returns a list of tuples of [new state, action taken, cost]
     List<Tuple<S,A>> execution(S state);

@@ -18,6 +18,7 @@ public class Tuple<S,A>{
     final A action;
     final int cost;
 
+
     public Tuple(S state, A action, int cost){
         this.state = state;
         this.action = action;

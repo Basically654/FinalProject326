@@ -8,6 +8,7 @@ package core_algorithms;
  *      S: the data type of states
  *      A: the data type of actions
  */
+
 public interface MyPriorityQueue<S,A> {
     Node<S,A> pop();
 

@@ -7,6 +7,7 @@ package core_algorithms;
  *  S: the data type of states
  *  A: the data type of actions
  */
+
 public class Node<S, A> {
     private final S STATE;
     private final A ACTION;

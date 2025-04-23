@@ -66,6 +66,7 @@ public class BaseSearch<S,A> {
                 System.out.println("↓");
             }
         }
+
         System.out.println("\nPath cost: "+pathCost);
     }
 }
