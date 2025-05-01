@@ -9,63 +9,110 @@ import problems.Maze;
 import java.awt.*;
 import java.util.*;
 
-public class AStar implements MyPriorityQueue<Point, String> {
-    private final PriorityQueue<Node<Point, String>> open;
-    private final Problem<Point, String> problem;
-    private final Map<Point, Integer> gScore = new HashMap<>();
+public class AStar extends BaseSearch<Point, String> {
 
     public AStar(Problem<Point, String> problem) {
-        this.problem = problem;
-        this.open = new PriorityQueue<>(Comparator.comparingInt(this::f));
+        super(problem, new AStarQueue(problem));
     }
+    private static class AStarQueue implements MyPriorityQueue<Point, String> {
+        private final PriorityQueue<Node<Point, String>> open;
+        private final Map<Point, Integer> gScore = new HashMap<>();
+        private final Problem<Point, String> problem;
 
-    private int h(Point current) {
-        Point goal = problem.goalState();
-        return Math.abs(current.x - goal.x) + Math.abs(current.y - goal.y);
-    }
+        public AStarQueue(Problem<Point, String> problem) {
+            this.problem = problem;
+            this.open = new PriorityQueue<>(Comparator.comparingInt(this::f));
+        }
 
-    private int f(Node<Point, String> node) {
-        return node.getPathCost() + h(node.getState());
-    }
+        private int h(Point current) {
+            Point goal = problem.goalState();
+            return Math.abs(current.x - goal.x) + Math.abs(current.y - goal.y);
+        }
 
-    @Override
-    public void add(Node<Point, String> node) {
-        Point state = node.getState();
-        int cost = node.getPathCost();
-        if (!gScore.containsKey(state) || cost < gScore.get(state)) {
-            gScore.put(state, cost);
-            open.add(node);
-            problem.printState(state);
-            System.out.println();
+        private int f(Node<Point, String> node) {
+            return node.getPathCost() + h(node.getState());
+        }
+
+        @Override
+        public void add(Node<Point, String> node) {
+            Point state = node.getState();
+            int cost = node.getPathCost();
+            if (!gScore.containsKey(state) || cost < gScore.get(state)) {
+                gScore.put(state, cost);
+                open.add(node);
+                problem.printState(state);
+                System.out.println();
+            }
+        }
+
+        @Override
+        public Node<Point, String> pop() {
+            return open.poll();
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return open.isEmpty();
         }
     }
+        public static void main(String[] args) {
 
-    @Override
-    public Node<Point, String> pop() {
-        return open.poll();
-    }
+            //7x5 maze
+            /*char[][] grid = {
+                    {'S', '.', '.', '#', '.', '.', '.'},
+                    {'.', '#', '.', '#', '.', '#', '.'},
+                    {'.', '#', '.', '.', '.', '#', '.'},
+                    {'.', '.', '#', '#', '.', '.', '.'},
+                    {'#', '.', '#', 'G', '.', '#', '.'}
+            };
 
-    @Override
-    public boolean isEmpty() {
-        return open.isEmpty();
-    }
+            Point start = new Point(0, 0);
+            Point goal = new Point(4, 3);*/
 
+            //10x10
+            /*char[][] grid = {
+                    {'S', '.', '.', '.', '#', '.', '.', '#', '.', '.'},
+                    {'#', '#', '#', '.', '#', '.', '#', '#', '#', '.'},
+                    {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+                    {'.', '#', '#', '#', '#', '#', '#', '.', '#', '.'},
+                    {'.', '.', '.', '.', '.', '.', '#', '.', '#', '.'},
+                    {'#', '#', '.', '#', '#', '.', '#', '.', '.', '.'},
+                    {'.', '.', '.', '.', '#', '.', '#', '#', '#', '.'},
+                    {'#', '#', '#', '.', '.', '.', '.', '.', '.', '.'},
+                    {'.', '.', '.', '.', '.', '#', '#', '#', '#', '.'},
+                    {'#', '#', '#', '#', '.', '.', '.', '#', 'G', '.'}
+            };
 
-    public static void main(String[] args) {
-        char[][] grid = {
-                {'S', '.', '.', '#', '.', '.', '.'},
-                {'.', '#', '.', '#', '.', '#', '.'},
-                {'.', '#', '.', '.', '.', '#', '.'},
-                {'.', '.', '#', '#', '.', '.', '.'},
-                {'#', '.', '#', 'G', '.', '#', '.'}
-        };
+            Point start = new Point(0, 0);
+            Point goal = new Point(9, 8);*/
 
-        Point start = new Point(0, 0);
-        Point goal = new Point(4, 3);
+            //30x15
+            char[][] grid = {
+                    {'S', '.', '.', '#', '.', '.', '.', '.', '.', '.', '.', '.', '.', '#', '.', '#', '.', '#', '.', '#', '#', '#', '.', '#', '.', '.', '.', '.', '.', '.'},
+                    {'.', '.', '.', '.', '#', '#', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '#', '.', '.', '.', '.', '#', '#', '.', '#', '.', '.', '.', '#', '.'},
+                    {'.', '.', '#', '.', '.', '.', '#', '.', '.', '.', '.', '#', '#', '.', '#', '.', '#', '#', '.', '.', '#', '.', '.', '.', '.', '#', '#', '#', '#', '#'},
+                    {'#', '#', '.', '#', '.', '.', '#', '#', '.', '#', '.', '#', '.', '#', '.', '.', '#', '.', '#', '.', '.', '.', '.', '#', '.', '#', '.', '.', '.', '#'},
+                    {'.', '.', '#', '.', '.', '.', '.', '.', '.', '#', '.', '.', '.', '.', '#', '.', '#', '.', '.', '.', '#', '.', '.', '.', '.', '.', '.', '#', '.', '.'},
+                    {'#', '.', '.', '#', '.', '#', '.', '.', '#', '.', '#', '.', '.', '.', '.', '.', '#', '.', '.', '#', '.', '#', '.', '.', '.', '.', '.', '.', '.', '.'},
+                    {'.', '.', '#', '#', '.', '.', '.', '#', '.', '#', '#', '#', '#', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '#', '#', '#', '.', '.', '.', '#'},
+                    {'#', '.', '.', '#', '#', '.', '#', '.', '#', '#', '.', '.', '.', '#', '.', '.', '.', '#', '.', '.', '#', '.', '.', '.', '.', '.', '#', '.', '.', '#'},
+                    {'.', '#', '.', '.', '.', '#', '#', '.', '#', '.', '.', '.', '#', '#', '.', '.', '.', '.', '.', '#', '.', '.', '.', '.', '.', '.', '#', '.', '#', '#'},
+                    {'.', '#', '.', '.', '.', '#', '.', '.', '#', '#', '.', '.', '#', '.', '#', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '#', '#', '.', '.', '#'},
+                    {'#', '.', '.', '.', '.', '.', '#', '#', '#', '.', '#', '#', '.', '#', '.', '#', '#', '.', '#', '#', '.', '#', '.', '.', '#', '.', '.', '.', '#', '#'},
+                    {'#', '#', '#', '.', '#', '.', '#', '#', '.', '.', '#', '#', '.', '.', '.', '#', '#', '.', '.', '.', '.', '#', '.', '.', '#', '.', '#', '.', '.', '#'},
+                    {'.', '#', '.', '.', '#', '#', '.', '.', '.', '.', '#', '.', '.', '.', '#', '#', '.', '.', '.', '.', '#', '.', '.', '.', '.', '.', '.', '#', '.', '.'},
+                    {'#', '#', '#', '.', '.', '#', '.', '.', '.', '#', '.', '.', '#', '.', '.', '.', '.', '.', '.', '#', '.', '#', '#', '.', '.', '#', '#', '.', '#', '.'},
+                    {'#', '.', '.', '#', '.', '.', '.', '.', '#', '.', '#', '#', '#', '#', '#', '#', '.', '.', '.', '#', '#', '.', '.', '#', '.', '.', '.', '.', '#', 'G'}
+            };
 
-        Maze maze = new Maze(grid, start, goal);
-        AStar astar = new AStar(maze);
-        BaseSearch<Point, String> search = new BaseSearch<>(maze, astar);
-        search.search();
-    }
+            Point start = new Point(0, 0);
+            Point goal = new Point(14, 29);
+
+            Maze maze = new Maze(grid, start, goal);
+
+            BaseSearch<Point, String> search = new AStar(maze);
+            search.search();
+        }
 }
+
+
