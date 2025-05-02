@@ -2,6 +2,7 @@ package core_algorithms;
 
 
 
+import java.awt.*;
 import java.util.List;
 
 /**
@@ -22,4 +23,6 @@ public interface Problem <S, A>{
 
     //Prints out the state in a neat format
     void printState(S state);
+
+    void printFinalPath(List<S> path);
 }

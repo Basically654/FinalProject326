@@ -58,7 +58,7 @@ public class AStar extends BaseSearch<Point, String> {
         public static void main(String[] args) {
 
             //7x5 maze
-            /*char[][] grid = {
+            char[][] grid = {
                     {'S', '.', '.', '#', '.', '.', '.'},
                     {'.', '#', '.', '#', '.', '#', '.'},
                     {'.', '#', '.', '.', '.', '#', '.'},
@@ -67,7 +67,7 @@ public class AStar extends BaseSearch<Point, String> {
             };
 
             Point start = new Point(0, 0);
-            Point goal = new Point(4, 3);*/
+            Point goal = new Point(4, 3);
 
             //10x10
             /*char[][] grid = {
@@ -87,7 +87,7 @@ public class AStar extends BaseSearch<Point, String> {
             Point goal = new Point(9, 8);*/
 
             //30x15
-            char[][] grid = {
+            /*char[][] grid = {
                     {'S', '.', '.', '#', '.', '.', '.', '.', '.', '.', '.', '.', '.', '#', '.', '#', '.', '#', '.', '#', '#', '#', '.', '#', '.', '.', '.', '.', '.', '.'},
                     {'.', '.', '.', '.', '#', '#', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '#', '.', '.', '.', '.', '#', '#', '.', '#', '.', '.', '.', '#', '.'},
                     {'.', '.', '#', '.', '.', '.', '#', '.', '.', '.', '.', '#', '#', '.', '#', '.', '#', '#', '.', '.', '#', '.', '.', '.', '.', '#', '#', '#', '#', '#'},
@@ -107,6 +107,8 @@ public class AStar extends BaseSearch<Point, String> {
 
             Point start = new Point(0, 0);
             Point goal = new Point(14, 29);
+
+             */
 
             Maze maze = new Maze(grid, start, goal);
 

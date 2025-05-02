@@ -35,7 +35,7 @@ public class BaseSearch<S,A> {
         reached.put(p.initialState(),start);
         while(!frontier.isEmpty()){
             Node<S,A> node = frontier.pop();
-            if(node.getState().equals(p.goalState())){
+            if(node.getState().equals(p.goalState())){ //once the search makes it to the goal state print the path
                 printPath(node);
                 return true;
             }
@@ -51,9 +51,10 @@ public class BaseSearch<S,A> {
         return false;
     }
 
-    public void printPath(Node<S,A> node){
+    public void printPath(Node<S,A> node){//print path of a star algorithm
         int pathCost = node.getPathCost();
         Stack<S> path = new Stack<>();
+        List<S> savedPath = new ArrayList<>();
         do {
             path.add(node.getState());
             node = node.getParent();
@@ -61,12 +62,16 @@ public class BaseSearch<S,A> {
 
         System.out.println("Path (from initial state to goal state): ");
         while(!path.isEmpty()){
-            p.printState(path.pop());
+            S state = path.pop();
+            p.printState(state);
+            savedPath.add(state);
             if(!path.isEmpty()) {
                 System.out.println("↓");
             }
         }
-
-        System.out.println("\nPath cost: "+pathCost);
+        System.out.println("\nPath cost: "+pathCost+"\n");
+        System.out.println("Final path: ");
+        p.printFinalPath(savedPath);
     }
+
 }

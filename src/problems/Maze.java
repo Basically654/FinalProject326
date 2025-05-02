@@ -70,4 +70,19 @@ public class Maze implements Problem<Point, String> {
         }
     }
 
+    @Override
+    public void printFinalPath(List<Point> path) {
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                Point p = new Point(i, j);
+                if (path.contains(p)) {
+                    System.out.print("D ");
+                } else {
+                    System.out.print(grid[i][j] + " ");
+                }
+            }
+            System.out.println();
+        }
+    }
+
 }
